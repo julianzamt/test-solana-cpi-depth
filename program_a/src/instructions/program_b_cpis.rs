@@ -27,18 +27,18 @@ pub fn cpi_add(accounts: &[AccountInfo]) -> ProgramResult {
     // Completar el chequeo
     let (accumulator_pubkey, _) = Pubkey::find_program_address(
         &[b"accumulator"],
-        &pubkey!("7cKiYqQhh12atTVhsZqKy4E12bN3kFbDdHqPo4FSuYwe"),
+        &pubkey!("8ooGcuGYUXHejEovJPE8Hkbzr7EUbbXsakmfaVSs8rjE"),
     );
     // if accumulator_pubkey != *accounts[0].key {
 
     // }
 
     let b_ix = Instruction::new_with_bytes(
-        pubkey!("7cKiYqQhh12atTVhsZqKy4E12bN3kFbDdHqPo4FSuYwe"),
+        pubkey!("8ooGcuGYUXHejEovJPE8Hkbzr7EUbbXsakmfaVSs8rjE"),
         buf,
         [
             AccountMeta::new(accumulator_pubkey, false),
-            AccountMeta::new_readonly(*signer_account_info.key, true),
+            AccountMeta::new(*signer_account_info.key, true),
             AccountMeta::new_readonly(*system_account_info.key, false)
         ]
         .to_vec(),

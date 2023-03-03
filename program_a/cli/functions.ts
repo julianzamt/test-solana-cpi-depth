@@ -1,5 +1,6 @@
 import * as web3 from '@solana/web3.js';
-import { programId, SIGNER } from './constants';
+import { Accumulator } from './types';
+import { programId, SIGNER, programBId } from './constants';
 
 export const sayHi = async (
   connection: web3.Connection,
@@ -13,14 +14,14 @@ export const sayHi = async (
     programBPubkey
   );
 
-  console.log('PDA: ', accumulatorAddress.toString());
+  console.log('Pubkey Accumulator: ', accumulatorAddress.toString());
 
   const instruction = new web3.TransactionInstruction({
     programId,
     keys: [
       { pubkey: programBPubkey, isSigner: false, isWritable: false },
       { pubkey: accumulatorAddress, isSigner: false, isWritable: true },
-      { pubkey: signer.publicKey, isSigner: true, isWritable: false },
+      { pubkey: signer.publicKey, isSigner: true, isWritable: true },
       {
         pubkey: web3.SystemProgram.programId,
         isSigner: false,
@@ -36,6 +37,27 @@ export const sayHi = async (
     [signer]
   );
   return txReceipt;
+};
+
+export const getAccumulator = async (
+  connection: web3.Connection,
+  signer: web3.Keypair = SIGNER
+) => {
+  let [AccumulatorAddress, _AccumulatorBump] =
+    web3.PublicKey.findProgramAddressSync(
+      [Buffer.from("accumulator")],
+      programBId
+    );
+  let AccumulatorInfo = await connection.getAccountInfo(
+    AccumulatorAddress,
+    "processed"
+  );
+  let data = AccumulatorInfo ? AccumulatorInfo.data : null;
+  if (!data) {
+    throw new Error("No data retrieved");
+  }
+  let AccumulatorStruct = Accumulator.decode(data);
+  return AccumulatorStruct;
 };
 
 export const packUInt32 = (buf: Buffer, data: number): Buffer => {
