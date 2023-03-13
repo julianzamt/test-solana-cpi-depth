@@ -19,53 +19,49 @@ impl Processor {
         accounts: &[AccountInfo],
         instruction_data: &[u8],
     ) -> ProgramResult {
-        let instruction = AdderInstruction::unpack(instruction_data)?;
+        let instruction = CounterInstruction::unpack(instruction_data)?;
 
         match instruction {
-            AdderInstruction::Add {} => {
-                Self::process_add(accounts, program_id)?;
+            CounterInstruction::Increase {} => {
+                Self::process_increase(accounts, program_id)?;
             }
         }
 
         Ok(())
     }
 
-    pub fn process_add(
-        accounts: &[AccountInfo],
-        program_id: &Pubkey
-    ) -> ProgramResult {
-        msg!("process_add ix...");
+    pub fn process_increase(accounts: &[AccountInfo], program_id: &Pubkey) -> ProgramResult {
+        msg!("process_increase ix...");
         let account_info_iter = &mut accounts.iter();
 
-        let accumulator = next_account_info(account_info_iter)?;
+        let counter = next_account_info(account_info_iter)?;
         let signer = next_account_info(account_info_iter)?;
         let _system_program = next_account_info(account_info_iter)?;
 
-        if accumulator.lamports() == 0 && *accumulator.owner == solana_program::system_program::id()
-        {
+        if counter.lamports() == 0 && *counter.owner == solana_program::system_program::id() {
             let rent = Rent::get()?;
-            let (_, bump) = Pubkey::find_program_address(&[b"accumulator"], program_id);
-            let space = Accumulator::LEN;
+            let (_, bump) = Pubkey::find_program_address(&[b"counter"], program_id);
+            let space = Counter::LEN;
             let rent_minimum_balance = rent.minimum_balance(space);
 
             invoke_signed(
                 &create_account(
                     &signer.key,
-                    &accumulator.key,
+                    &counter.key,
                     rent_minimum_balance,
                     space as u64,
                     program_id,
                 ),
-                &[signer.clone(), accumulator.clone()],
-                &[&[b"accumulator".as_ref(), &[bump]]],
+                &[signer.clone(), counter.clone()],
+                &[&[b"counter".as_ref(), &[bump]]],
             )?;
         }
 
-        let mut accumulator_data = Accumulator::unpack_unchecked(&accumulator.try_borrow_data()?)?;
+        let mut counter_data = Counter::unpack_unchecked(&counter.try_borrow_data()?)?;
 
-        add::add(&mut accumulator_data)?;
+        increase::increase(&mut counter_data)?;
 
-        Accumulator::pack(accumulator_data, &mut accumulator.try_borrow_mut_data()?)?;
+        Counter::pack(counter_data, &mut counter.try_borrow_mut_data()?)?;
 
         Ok(())
     }

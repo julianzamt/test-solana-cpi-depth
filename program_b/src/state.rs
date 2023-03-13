@@ -4,16 +4,14 @@ use solana_program::{
     program_pack::{Pack, Sealed},
 };
 
-// Stores a number increased by the number sent in say_bye_and_add(number).
 #[derive(Debug, Default)]
-pub struct Accumulator {
-    // The number increased by the say_bye_and_add method.
+pub struct Counter {
     pub number: u32,
 }
 
-impl Sealed for Accumulator {}
+impl Sealed for Counter {}
 
-impl Pack for Accumulator {
+impl Pack for Counter {
     const LEN: usize = 4;
 
     fn unpack_from_slice(src: &[u8]) -> Result<Self, ProgramError> {
@@ -23,14 +21,14 @@ impl Pack for Accumulator {
         let new_src: &[u8] = src;
         (_, number) = rust_utils::unpack_u32(new_src);
 
-        Ok(Accumulator { number })
+        Ok(Counter { number })
     }
 
     fn pack_into_slice(&self, dst: &mut [u8]) {
         let new_dst: &mut [u8] = dst;
 
         // Destructure self
-        let Accumulator { number } = self;
+        let Counter { number } = self;
 
         // Serialize each field
         rust_utils::pack_u32(new_dst, *number);

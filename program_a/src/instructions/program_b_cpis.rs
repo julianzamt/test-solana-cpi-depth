@@ -20,21 +20,20 @@ pub fn cpi_add(accounts: &[AccountInfo]) -> ProgramResult {
     let signer_account_info = next_account_info(accounts_iter)?;
     let system_account_info = next_account_info(accounts_iter)?;
 
-    // Cómo sé cuál es la Ix number?
     let buf: &mut [u8] = &mut [0; 4];
     pack_u32(buf, 0);
 
     // Completar el chequeo
     let (accumulator_pubkey, _) = Pubkey::find_program_address(
-        &[b"accumulator"],
-        &pubkey!("8ooGcuGYUXHejEovJPE8Hkbzr7EUbbXsakmfaVSs8rjE"),
+        &[b"counter"],
+        &pubkey!("7cKiYqQhh12atTVhsZqKy4E12bN3kFbDdHqPo4FSuYwe"),
     );
-    // if accumulator_pubkey != *accounts[0].key {
-
+    // if accumulator_pubkey != *accumulator_account_info.key {
+    //     return Err(ProgramNameError::InvalidPDA);
     // }
 
     let b_ix = Instruction::new_with_bytes(
-        pubkey!("8ooGcuGYUXHejEovJPE8Hkbzr7EUbbXsakmfaVSs8rjE"),
+        pubkey!("7cKiYqQhh12atTVhsZqKy4E12bN3kFbDdHqPo4FSuYwe"),
         buf,
         [
             AccountMeta::new(accumulator_pubkey, false),

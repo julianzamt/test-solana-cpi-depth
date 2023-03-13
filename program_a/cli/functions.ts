@@ -10,11 +10,11 @@ export const sayHi = async (
   let dataBuffer = Buffer.from('');
 
   let [accumulatorAddress] = await web3.PublicKey.findProgramAddressSync(
-    [Buffer.from('accumulator')],
+    [Buffer.from('counter')],
     programBPubkey
   );
 
-  console.log('Pubkey Accumulator: ', accumulatorAddress.toString());
+  console.log('Pubkey Counter: ', accumulatorAddress.toString());
 
   const instruction = new web3.TransactionInstruction({
     programId,
@@ -45,7 +45,7 @@ export const getAccumulator = async (
 ) => {
   let [AccumulatorAddress, _AccumulatorBump] =
     web3.PublicKey.findProgramAddressSync(
-      [Buffer.from("accumulator")],
+      [Buffer.from("counter")],
       programBId
     );
   let AccumulatorInfo = await connection.getAccountInfo(

@@ -1,8 +1,8 @@
 use crate::state::*;
 use solana_program::entrypoint::ProgramResult;
 
-pub fn add(accumulator_data: &mut Accumulator) -> ProgramResult {
+pub fn increase(counter_data: &mut Counter) -> ProgramResult {
     // Place your custom code here...
-    accumulator_data.number += 1;
+    counter_data.number += 1;
     Ok(())
 }

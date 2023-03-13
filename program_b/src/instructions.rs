@@ -2,16 +2,16 @@ use crate::*;
 use solana_program::{msg, program_error::ProgramError};
 
 #[derive(Debug)]
-pub enum AdderInstruction {
+pub enum CounterInstruction {
     /// Accounts expected:
     ///
-    /// 0. `[writable]` accumulator
+    /// 0. `[writable]` counter
     /// 1. `[]` signer
     /// 2. `[]` system_program
-    Add {},
+    Increase {},
 }
 
-impl AdderInstruction {
+impl CounterInstruction {
     pub fn unpack(input: &[u8]) -> Result<Self, ProgramError> {
         msg!("Unpacking instruction...");
 
@@ -20,9 +20,7 @@ impl AdderInstruction {
             .ok_or(errors::AdderError::InvalidInstruction)?;
 
         Ok(match tag {
-            0 => {
-                Self::Add {}
-            }
+            0 => Self::Increase {},
 
             _ => return Err(errors::AdderError::InvalidInstruction.into()),
         })

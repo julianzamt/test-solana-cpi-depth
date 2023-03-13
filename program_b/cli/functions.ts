@@ -2,9 +2,9 @@ import * as web3 from "@solana/web3.js";
 import { Buffer } from "buffer";
 import { programId, SIGNER } from "./constants";
 import * as utils from "./utils";
-import { Accumulator } from "./types";
+import { Counter } from "./types";
 
-export const add = async (
+export const increase = async (
   connection: web3.Connection,
   signer: web3.Keypair = SIGNER
 ) => {
@@ -14,16 +14,16 @@ export const add = async (
 
   dataBuffer = utils.packUInt8(dataBuffer, instructionNumber);
 
-  let [accumulatorAddress, _accumulatorBump] =
+  let [counterAddress, _counterBump] =
     web3.PublicKey.findProgramAddressSync(
-      [Buffer.from("accumulator")],
+      [Buffer.from("counter")],
       programId
     );
 
   const instruction = new web3.TransactionInstruction({
     programId,
     keys: [
-      { pubkey: accumulatorAddress, isSigner: false, isWritable: true },
+      { pubkey: counterAddress, isSigner: false, isWritable: true },
       { pubkey: signer.publicKey, isSigner: true, isWritable: false },
       {
         pubkey: web3.SystemProgram.programId,
@@ -44,23 +44,23 @@ export const add = async (
 
 /******* GETTERS ********/
 
-export const getAccumulator = async (
+export const getCounter = async (
   connection: web3.Connection,
   signer: web3.Keypair = SIGNER
 ) => {
-  let [AccumulatorAddress, _AccumulatorBump] =
+  let [counterAddress, _counterBump] =
     web3.PublicKey.findProgramAddressSync(
-      [Buffer.from("accumulator")],
+      [Buffer.from("counter")],
       programId
     );
-  let AccumulatorInfo = await connection.getAccountInfo(
-    AccumulatorAddress,
+  let counterInfo = await connection.getAccountInfo(
+    counterAddress,
     "processed"
   );
-  let data = AccumulatorInfo ? AccumulatorInfo.data : null;
+  let data = counterInfo ? counterInfo.data : null;
   if (!data) {
     throw new Error("No data retrieved");
   }
-  let AccumulatorStruct = Accumulator.decode(data);
-  return AccumulatorStruct;
+  let counterStruct = Counter.decode(data);
+  return counterStruct;
 };
