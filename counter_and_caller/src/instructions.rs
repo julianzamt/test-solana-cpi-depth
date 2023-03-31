@@ -9,10 +9,6 @@ pub enum CounterInstruction {
     /// 1. `[]` signer
     /// 2. `[]` system_program
     Increase {},
-    /// Accounts expected:
-    ///
-    /// 0. `[]` counter
-    LogCounter {},
 }
 
 impl CounterInstruction {
@@ -25,8 +21,6 @@ impl CounterInstruction {
 
         Ok(match tag {
             0 => Self::Increase {},
-
-            1 => Self::LogCounter {},
 
             _ => return Err(errors::AdderError::InvalidInstruction.into()),
         })

@@ -11,12 +11,12 @@ fn process_instruction(
     accounts: &[AccountInfo],
     instruction_data: &[u8],
 ) -> ProgramResult {
-    // msg!(
-    //     "program_id: {}, accounts: {:?}, instruction_data: {:?}",
-    //     program_id,
-    //     accounts,
-    //     instruction_data
-    // );
+    msg!(
+        "program_id: {}, accounts: {:?}, instruction_data: {:?}",
+        program_id,
+        accounts,
+        instruction_data
+    );
 
     Processor::process(program_id, accounts, instruction_data)
 }

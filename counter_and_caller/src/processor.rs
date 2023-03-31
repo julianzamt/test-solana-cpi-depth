@@ -25,9 +25,6 @@ impl Processor {
             CounterInstruction::Increase {} => {
                 Self::process_increase(accounts, program_id)?;
             }
-            CounterInstruction::LogCounter {} => {
-                Self::process_log_counter(accounts, program_id)?;
-            }
         }
 
         Ok(())
@@ -63,43 +60,6 @@ impl Processor {
         let mut counter_data = Counter::unpack_unchecked(&counter.try_borrow_data()?)?;
 
         increase::increase(&mut counter_data)?;
-
-        Counter::pack(counter_data, &mut counter.try_borrow_mut_data()?)?;
-
-        Ok(())
-    }
-
-    pub fn process_log_counter(accounts: &[AccountInfo], program_id: &Pubkey) -> ProgramResult {
-        msg!("process_log_counter ix...");
-        let account_info_iter = &mut accounts.iter();
-
-        let counter = next_account_info(account_info_iter)?;
-        let signer = next_account_info(account_info_iter)?;
-        let _system_program = next_account_info(account_info_iter)?;
-
-        if counter.lamports() == 0 && *counter.owner == solana_program::system_program::id() {
-            let rent = Rent::get()?;
-            let (_, bump) = Pubkey::find_program_address(&[b"counter"], program_id);
-            let space = Counter::LEN;
-            let rent_minimum_balance = rent.minimum_balance(space);
-
-            invoke_signed(
-                &create_account(
-                    &signer.key,
-                    &counter.key,
-                    rent_minimum_balance,
-                    space as u64,
-                    program_id,
-                ),
-                &[signer.clone(), counter.clone()],
-                &[&[b"counter".as_ref(), &[bump]]],
-            )?;
-        }
-
-
-        let counter_data = Counter::unpack_unchecked(&counter.try_borrow_data()?)?;
-
-        msg!("Counter IS: {:?}", counter_data);
 
         Counter::pack(counter_data, &mut counter.try_borrow_mut_data()?)?;
 

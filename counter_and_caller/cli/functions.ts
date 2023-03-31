@@ -23,7 +23,7 @@ export const increase = async (
   const instruction = new web3.TransactionInstruction({
     programId,
     keys: [
-      { pubkey: counterAddress, isSigner: false, isWritable: false },
+      { pubkey: counterAddress, isSigner: false, isWritable: true },
       { pubkey: signer.publicKey, isSigner: true, isWritable: false },
       {
         pubkey: web3.SystemProgram.programId,
