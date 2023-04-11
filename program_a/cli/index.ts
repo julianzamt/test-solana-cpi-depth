@@ -1,15 +1,15 @@
 import * as web3 from '@solana/web3.js';
 import { programBId } from './constants';
 
-import { getAccumulator, sayHi } from './functions';
+import { getAccumulator, callIncreaseAndLogCounterFromProgramB } from './functions';
 const connection = new web3.Connection('http://127.0.0.1:8899');
 
 async function main() {
   // write your code here
-  await sayHi(
+  await callIncreaseAndLogCounterFromProgramB(
     connection,
-    //new web3.PublicKey('8ooGcuGYUXHejEovJPE8Hkbzr7EUbbXsakmfaVSs8rjE')
-    programBId
+    programBId,
+    32
   );
 
   console.log(await getAccumulator(connection));

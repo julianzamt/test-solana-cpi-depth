@@ -2,19 +2,22 @@ import * as web3 from '@solana/web3.js';
 import { Accumulator } from './types';
 import { programId, SIGNER, programBId } from './constants';
 
-export const sayHi = async (
+export const callIncreaseAndLogCounterFromProgramB = async (
   connection: web3.Connection,
   programBPubkey: web3.PublicKey,
+  num: number,
   signer: web3.Keypair = SIGNER
 ) => {
   let dataBuffer = Buffer.from('');
+
+  dataBuffer = packUInt32(dataBuffer, num)
 
   let [accumulatorAddress] = await web3.PublicKey.findProgramAddressSync(
     [Buffer.from('counter')],
     programBPubkey
   );
 
-  console.log('Pubkey Counter: ', accumulatorAddress.toString());
+  // console.log('dataBuffer: ', dataBuffer);
 
   const instruction = new web3.TransactionInstruction({
     programId,

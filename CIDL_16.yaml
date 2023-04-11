@@ -1,0 +1,60 @@
+cidl: 1.0
+info:
+  title: cpis_with_user_selected_acc
+  version: 1.0
+  summary: 
+contact:
+  name: Coinfabrik
+  url: www.coinfabrik.com
+  email: cf@coinfabrik.com
+  git: <github>
+license:
+  name: Unlicensed
+  url: none
+methods:
+  method-1:
+    name: compare_then_call_and_increase
+    version: 1.0
+    summary: Compares two Counters from increase_program. Then calls increase from increase_program with the one that stores the lowest number.
+    parameters:
+      parameter-1:
+        name: counter_1
+        type: Counter
+        from: increase_program
+      parameter-2:
+        name: counter_2
+        type: Counter
+        from: increase_program
+    cpis:
+      cpi-1:
+        program: increase_program
+        method: increase
+
+  externalPrograms:
+    program-1:
+      name: increase_program
+      programId: HyYjeFzX6evd8waHu9YmEWkJzxYX8ryAp2AnKF5jeeVJ
+      methods:
+        method-1:
+          ixNumber: 0
+          name: increase
+          parameters: 
+            parameter-1:
+              name: counter
+              type: Counter
+              attributes: [mut, init_if_needed]
+            parameter-2:
+              name: user_id
+              type: Pubkey
+              seed-for: counter.user_id
+      
+      customTypes:
+        accounts:
+          account-1:
+            name: Counter
+            summary: The counter account
+            type: PDA
+            seeds: ['counter', 'Pubkey:user_id'] 
+          
+
+
