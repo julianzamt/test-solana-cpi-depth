@@ -12,7 +12,7 @@ The motivation was to test the CPI depth of Solana, currently set to 4.
 # Usage
 Once deployed all programs and set their clients with the returned Ids, pass a private key in cli/constants from the program you want to execute the tx. 
 
-Spoiler: Executing the sequence {0, 1, 2, 3, Add} works. {-1, 0, 1, 2, 3, Add} doesn't.
+Spoiler: Executing the sequence {0, 1, 2, 3, Add} works (Call depth 4 + Caller). {-1, 0, 1, 2, 3, Add} doesn't.
 
 
 
