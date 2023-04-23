@@ -5,12 +5,11 @@ import { packUInt8 } from './utils';
 export const callAddCaller = async (
   connection: web3.Connection,
   program3Id: web3.PublicKey,
+  addProgramId: web3.PublicKey,
   num: number,
   signer: web3.Keypair = SIGNER
 ) => {
   let dataBuffer = Buffer.from("");
-
-  const addProgramId = new web3.PublicKey("EQPKvHz9obWzVNVhg58rt4AY5545hkGzGbBdJXYCKfgF")
 
   dataBuffer = packUInt8(dataBuffer, num);
 
@@ -18,8 +17,6 @@ export const callAddCaller = async (
     [Buffer.from('adder')],
     addProgramId
   );
-
-  // console.log('dataBuffer: ', dataBuffer);
 
   const instruction = new web3.TransactionInstruction({
     programId,

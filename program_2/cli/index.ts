@@ -6,11 +6,13 @@ const connection = new web3.Connection('http://127.0.0.1:8899');
 
 async function main() {
   // write your code here
-  const program3Id = new web3.PublicKey("9wSm68hecoru1grewLFPGTzvVKZ5vdMAF9bXwrUPBftp")
+  const addProgramId = new web3.PublicKey("")
+  const program3Id = new web3.PublicKey("")
 
   await callAddCaller(
     connection,
     program3Id,
+    addProgramId,
     2
   );
 
@@ -27,7 +29,7 @@ async function main() {
  
   const [num, _] = unpackUInt8(data);
 
-  console.log('Counter number is: ', num);
+  console.log('Add number is: ', num);
 
 }
 

@@ -10,11 +10,6 @@ export const callProgram0 = async (
 ) => {
   let dataBuffer = Buffer.from("");
 
-  const addProgramId = new web3.PublicKey("EQPKvHz9obWzVNVhg58rt4AY5545hkGzGbBdJXYCKfgF")
-  const program3Id = new web3.PublicKey("9wSm68hecoru1grewLFPGTzvVKZ5vdMAF9bXwrUPBftp")
-  const program2Id = new web3.PublicKey("HoHHtNBevaqhyFuPx9z3vzWFRx66Y94mn22BPK9h24wd")
-  const program1Id = new web3.PublicKey("Fe9DGPwqKFxoamYoAEsCRiAg9Aa3W32dVPC55P4mUnga")
-
   dataBuffer = packUInt8(dataBuffer, num);
 
   let [adderAddress] = await web3.PublicKey.findProgramAddressSync(

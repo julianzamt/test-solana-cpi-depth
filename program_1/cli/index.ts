@@ -6,17 +6,21 @@ const connection = new web3.Connection('http://127.0.0.1:8899');
 
 async function main() {
   // write your code here
-  const program2Id = new web3.PublicKey("HoHHtNBevaqhyFuPx9z3vzWFRx66Y94mn22BPK9h24wd")
+  const addProgramId = new web3.PublicKey("")
+  const program3Id = new web3.PublicKey("")
+  const program2Id = new web3.PublicKey("")
 
   await callProgram2(
     connection,
     program2Id,
+    program3Id,
+    addProgramId,
     1
   );
 
   // Print Adder.number in console
   let adderInfo = await connection.getAccountInfo(
-    new web3.PublicKey('7CvGzVBGnpuBWsAt8h5AEN8SB9HCzunYrs4FstKVM2Wf'),
+    new web3.PublicKey(''),
     'processed'
   );
 
@@ -27,7 +31,7 @@ async function main() {
  
   const [num, _] = unpackUInt8(data);
 
-  console.log('Counter number is: ', num);
+  console.log('Adder number is: ', num);
 
 }
 

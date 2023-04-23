@@ -5,13 +5,12 @@ import { packUInt8 } from './utils';
 export const callProgram2 = async (
   connection: web3.Connection,
   program2Id: web3.PublicKey,
+  program3Id: web3.PublicKey,
+  addProgramId: web3.PublicKey,
   num: number,
   signer: web3.Keypair = SIGNER
 ) => {
   let dataBuffer = Buffer.from("");
-
-  const addProgramId = new web3.PublicKey("EQPKvHz9obWzVNVhg58rt4AY5545hkGzGbBdJXYCKfgF")
-  const program3Id = new web3.PublicKey("9wSm68hecoru1grewLFPGTzvVKZ5vdMAF9bXwrUPBftp")
 
   dataBuffer = packUInt8(dataBuffer, num);
 
